@@ -2,7 +2,7 @@
 
 On all nodes run:
 
-    $ bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/master/sginstall.sh) [-hvudsc]
+    $ bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/master/sginstall.sh) [-hvudsck]
     
 Run
 

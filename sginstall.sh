@@ -10,6 +10,7 @@ demo=0
 verbose=0
 update=0
 commercial=0
+kibana=0
 
 function show_help() {
     echo "sginstall.sh [-h] [-v] [-u] [-d] [-s] [-c]"
@@ -19,9 +20,10 @@ function show_help() {
     echo "  -d install demo certificates and demo config"
     echo "  -s install latest snapshot instead of latest release"
     echo "  -c install also commercial modules (like ldap, dls/fls, ...)"
+    echo "  -k install also kibana plugin (if kibana could be found)"
 }
 
-while getopts "h?vudsc" opt; do
+while getopts "h?vudsck" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -36,6 +38,8 @@ while getopts "h?vudsc" opt; do
     s)  snapshot=1
         ;;
     c)  commercial=1
+        ;;
+    k)  kibana=1
         ;;
     esac
 done
@@ -140,8 +144,8 @@ ES_MINOR_VERSION_COMPACT=${ES_MINOR_VERSION/./}
 KIBANA_SG_PLUGIN_URL="https://github.com/floragunncom/search-guard-kibana-plugin/releases/download/v$ES_VERSION-beta3.1/searchguard-kibana-$ES_VERSION-beta3.1.zip"
 
 
-if [ -f "/usr/share/kibana/bin/kibana" ]; then
-    #$SUDO_CMD /usr/share/kibana/bin/kibana-plugin remove 
+if [ -f "/usr/share/kibana/bin/kibana" ] && [ "$kibana" == 1 ]; then
+    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin remove searchguard || true
     $SUDO_CMD /usr/share/kibana/bin/kibana-plugin install $KIBANA_SG_PLUGIN_URL
 fi
 
@@ -174,7 +178,7 @@ SG_VERSION="${!SG_TMP}"
 #echo "ES_MINOR_VERSION_COMPACT: $ES_MINOR_VERSION_COMPACT"
 #echo "SG_VERSION: $SG_VERSION"
 
-rm -f "$ES_PLUGINS_DIR/search-guard-5/dlic*.jar"
+$SUDO_CMD rm -f "$ES_PLUGINS_DIR/search-guard-5/dlic*.jar"
 
 if [ "$snapshot" == 1 ];then 
     echo "Will install Search Guard $ES_MINOR_VERSION.x-HEAD-SNAPSHOT (do not use this in production)"
@@ -229,7 +233,7 @@ $SUDO_CMD wget "https://search.maven.org/remotecontent?filepath=io/netty/netty-t
 
 dbg "Openssl binding installed"
 
-rm -f "/tmp/p_search-guard-5.zip"
+$SUDO_CMD rm -f "/tmp/p_search-guard-5.zip"
 
 $SUDO_CMD chmod -R +x "$ES_PLUGINS_DIR/search-guard-5/tools/"
 
