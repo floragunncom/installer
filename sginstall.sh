@@ -104,7 +104,7 @@ SUDO_CMD=""
 ES_INSTALL_TYPE=".tar.gz"
     
 #Check if its a rpm/deb install
-if [ -f /etc/elasticsearch/elasticsearch.yml ]; then
+if [ -f /usr/share/elasticsearch/bin/elasticsearch ]; then
     ES_CONF_FILE="/etc/elasticsearch/elasticsearch.yml"
     ES_BIN_DIR="/usr/share/elasticsearch/bin"
     ES_PLUGINS_DIR="/usr/share/elasticsearch/plugins"
@@ -114,19 +114,25 @@ if [ -f /etc/elasticsearch/elasticsearch.yml ]; then
     echo "We might ask you for the root password during install."
 fi
 
+if $SUDO_CMD test -f "$ES_CONF_FILE"; then
+    :
+else
+    err "Unable to determine elasticsearch config directory. Quit."
+fi
+
 if [ ! -f $ES_CONF_FILE ]; then
     err "Unable to determine elasticsearch config directory. Quit."
 fi
     
-if [ ! -d $ES_BIN_DIR ]; then
+if [ ! -d "$ES_BIN_DIR" ]; then
 	err "Unable to determine elasticsearch bin directory. Quit."
 fi
 
-if [ ! -d $ES_PLUGINS_DIR ]; then
+if [ ! -d "$ES_PLUGINS_DIR" ]; then
 	err "Unable to determine elasticsearch plugins directory. Quit."
 fi
 
-if [ ! -d $ES_LIB_PATH ]; then
+if [ ! -d "$ES_LIB_PATH" ]; then
 	err "Unable to determine elasticsearch lib directory. Quit."
 fi
 
