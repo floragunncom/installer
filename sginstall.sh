@@ -19,7 +19,7 @@ function show_help() {
     echo "  -s install latest snapshot instead of latest release"
 }
 
-while getopts "h?vuds:" opt; do
+while getopts "h?vuds" opt; do
     case "$opt" in
     h|\?)
         show_help
