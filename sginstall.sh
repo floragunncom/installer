@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo "Search Guard 5 Installer"
+echo "Search Guard 5 Installer Version 0.1"
 
 
 OPTIND=1
@@ -9,17 +9,19 @@ OPTIND=1
 demo=0
 verbose=0
 update=0
+commercial=0
 
 function show_help() {
-    echo "sginstall.sh [-h] [-v] [-u] [-d] [-s]"
+    echo "sginstall.sh [-h] [-v] [-u] [-d] [-s] [-c]"
     echo "  -h show help"
     echo "  -v verbose"
-    echo "  -u update if already installed, otherwise fail"
-    echo "  -d install demo"
+    echo "  -u update plugin if already installed, otherwise fail"
+    echo "  -d install demo certificates and demo config"
     echo "  -s install latest snapshot instead of latest release"
+    echo "  -c install also commercial modules (like ldap, dls/fls, ...)"
 }
 
-while getopts "h?vuds" opt; do
+while getopts "h?vudsc" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -32,6 +34,8 @@ while getopts "h?vuds" opt; do
     d)  demo=1
         ;;
     s)  snapshot=1
+        ;;
+    c)  commercial=1
         ;;
     esac
 done
@@ -107,11 +111,10 @@ if [ -f /etc/elasticsearch/elasticsearch.yml ]; then
     ES_LIB_PATH="/usr/share/elasticsearch/lib"
     SUDO_CMD="sudo"
     ES_INSTALL_TYPE="rpm/deb"
+    echo "We might ask you for the root password during install."
 fi
 
 if [ ! -f $ES_CONF_FILE ]; then
-    find $BASE_DIR -name elasticsearch.yml 2>/dev/null
-
     err "Unable to determine elasticsearch config directory. Quit."
 fi
     
@@ -146,7 +149,6 @@ if [ "$SG_STATUS" != "supported" ];then
     err "Elasticsearch $ES_VERSION not supported by this installer (yet). Currently we support >= ES 5.0.0"
 fi
 
-
 if [ -d "$ES_PLUGINS_DIR/search-guard-5" ]; then
   
   if [ "$update" == 1 ]; then
@@ -159,8 +161,6 @@ fi
 SG_TMP="SGI_search_guard_5_${ES_MINOR_VERSION_COMPACT}"
 SG_VERSION="${!SG_TMP}"
 
-
-
 #echo "ES_MINOR_VERSION_COMPACT: $ES_MINOR_VERSION_COMPACT"
 #echo "SG_VERSION: $SG_VERSION"
 
@@ -168,39 +168,40 @@ rm -f "$ES_PLUGINS_DIR/search-guard-5/dlic*.jar"
 
 if [ "$snapshot" == 1 ];then 
     echo "Will install Search Guard $ES_MINOR_VERSION.x-HEAD-SNAPSHOT (do not use this in production)"
-    wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
-    
-    $SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip" > /dev/null 2>&1
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
 else
     echo "Will install Search Guard $ES_VERSION-$SG_VERSION release"
-    wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
     
-    $SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip" > /dev/null 2>&1
-    
-	SG_TMP="SGI_dlic_search_guard_auth_http_kerberos_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-kerberos&v=${!SG_TMP}" --content-disposition  -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
+fi
+
+$SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip" > /dev/null 2>&1    
+
+
+if [ "$commercial" == 1 ]; then
+    SG_TMP="SGI_dlic_search_guard_auth_http_kerberos_${ES_MINOR_VERSION_COMPACT}"
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-kerberos&v=${!SG_TMP}" --content-disposition  -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
 	dbg "Kerberos module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_auth_http_jwt_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-jwt&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-jwt&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "JWT module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_module_dlsfls_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-dlsfls&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-dlsfls&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "DLS/FLS module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_module_auditlog_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-auditlog&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-auditlog&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Auditlog module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_authbackend_ldap_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-authbackend-ldap&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-authbackend-ldap&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "LDAP module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_rest_api_${ES_MINOR_VERSION_COMPACT}"
-	wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-rest-api&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-rest-api&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Management API module ${!SG_TMP} installed"
-    
 fi
 
 
@@ -214,7 +215,7 @@ else
   KIBANA_CLASSIFIER=linux-x86_64
 fi
 
-wget "https://search.maven.org/remotecontent?filepath=io/netty/netty-tcnative/${!NETTY_NATIVE_VERSION}/netty-tcnative-${!NETTY_NATIVE_VERSION}-$NETTY_NATIVE_CLASSIFIER.jar" --content-disposition -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
+$SUDO_CMD wget "https://search.maven.org/remotecontent?filepath=io/netty/netty-tcnative/${!NETTY_NATIVE_VERSION}/netty-tcnative-${!NETTY_NATIVE_VERSION}-$NETTY_NATIVE_CLASSIFIER.jar" --content-disposition -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
 
 dbg "Openssl binding installed"
 
@@ -223,8 +224,7 @@ rm -f "/tmp/p_search-guard-5.zip"
 $SUDO_CMD chmod -R +x "$ES_PLUGINS_DIR/search-guard-5/tools/"
 
 if [ "$demo" == 1 ]; then
-    "$ES_PLUGINS_DIR/search-guard-5/tools/install_demo_configuration.sh" -y
+    $SUDO_CMD "$ES_PLUGINS_DIR/search-guard-5/tools/install_demo_configuration.sh" -y
 else
-   echo ""
    echo "Search Guard successfully installed"
 fi
