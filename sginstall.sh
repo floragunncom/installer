@@ -111,29 +111,25 @@ if [ -f /usr/share/elasticsearch/bin/elasticsearch ]; then
     ES_LIB_PATH="/usr/share/elasticsearch/lib"
     SUDO_CMD="sudo"
     ES_INSTALL_TYPE="rpm/deb"
-    echo "We might ask you for the root password during install."
+    echo "We might ask you for the root password during install"
 fi
 
 if $SUDO_CMD test -f "$ES_CONF_FILE"; then
     :
 else
-    err "Unable to determine elasticsearch config directory. Quit."
-fi
-
-if [ ! -f $ES_CONF_FILE ]; then
-    err "Unable to determine elasticsearch config directory. Quit."
+    err "Unable to determine elasticsearch config directory"
 fi
     
 if [ ! -d "$ES_BIN_DIR" ]; then
-	err "Unable to determine elasticsearch bin directory. Quit."
+	err "Unable to determine elasticsearch bin directory"
 fi
 
 if [ ! -d "$ES_PLUGINS_DIR" ]; then
-	err "Unable to determine elasticsearch plugins directory. Quit."
+	err "Unable to determine elasticsearch plugins directory"
 fi
 
 if [ ! -d "$ES_LIB_PATH" ]; then
-	err "Unable to determine elasticsearch lib directory. Quit."
+	err "Unable to determine elasticsearch lib directory"
 fi
 
 ES_CONF_DIR=$(dirname "${ES_CONF_FILE}")
@@ -141,6 +137,14 @@ ES_VERSION=("$ES_LIB_PATH/elasticsearch-*.jar")
 ES_VERSION=$(echo $ES_VERSION | sed 's/.*elasticsearch-\(.*\)\.jar/\1/')
 ES_MINOR_VERSION=$(echo $ES_VERSION | sed 's/\(.*\)\.\(.*\)/\1/')
 ES_MINOR_VERSION_COMPACT=${ES_MINOR_VERSION/./}
+KIBANA_SG_PLUGIN_URL="https://github.com/floragunncom/search-guard-kibana-plugin/releases/download/v$ES_VERSION-beta3.1/searchguard-kibana-$ES_VERSION-beta3.1.zip"
+
+
+if [ -f "/usr/share/kibana/bin/kibana" ]; then
+    #$SUDO_CMD /usr/share/kibana/bin/kibana-plugin remove 
+    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin install $KIBANA_SG_PLUGIN_URL
+fi
+
 
 #TODO also install kibana plugin
 #but we need locate kibana for this
