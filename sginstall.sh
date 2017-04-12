@@ -145,8 +145,9 @@ KIBANA_SG_PLUGIN_URL="https://github.com/floragunncom/search-guard-kibana-plugin
 
 
 if [ -f "/usr/share/kibana/bin/kibana" ] && [ "$kibana" == 1 ]; then
-    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin remove searchguard || true
-    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin install $KIBANA_SG_PLUGIN_URL
+    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin remove searchguard || true > /dev/null 2>&1
+    $SUDO_CMD /usr/share/kibana/bin/kibana-plugin install $KIBANA_SG_PLUGIN_URL > /dev/null 2>&1
+    echo "Kibana plugin installed"
 fi
 
 
