@@ -15,19 +15,12 @@ bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/hel
 sleep 30
 ./sgadmin_demo.sh
 #sudo ls -la /etc/elasticsearch
-#sudo ls -la /var/log/elasticsearch
 #sudo cat /etc/elasticsearch/elasticsearch.yml
 curl -k -u admin:admin https://localhost:9200/_searchguard/authinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_searchguard/sslinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
-
-#set +e
-#sudo ls -la /var/log/elasticsearch
-#sudo cat /var/log/elasticsearch/*
-
-echo "Kill"
+echo "Kill elasticsearch"
 sudo killall java
-
-sudo ls -la /var/log/elasticsearch
+#sudo ls -la /var/log/elasticsearch
 sudo cat /var/log/elasticsearch/searchguard_demo.log
 echo "Done"
