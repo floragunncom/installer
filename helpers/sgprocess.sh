@@ -1,4 +1,9 @@
 #!/bin/bash
+sudo killall java > /dev/null 2>&1
+sudo apt-get purge -y elasticsearch #> /dev/null 2>&1
+sudo rm -rf /etc/elasticsearch > /dev/null 2>&1
+sudo rm -rf /var/lib/elasticsearch > /dev/null 2>&1
+sudo rm -rf /usr/share/elasticsearch > /dev/null 2>&1
 set -e
 echo "Process $1"
 bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh) "$1"
@@ -15,4 +20,3 @@ curl -k -u admin:admin https://localhost:9200/_searchguard/sslinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
 sudo killall java
 sudo cat /var/log/elasticsearch/*
-sudo apt-get purge -f -y elasticsearch 
