@@ -10,7 +10,7 @@ lastErr() {
 trap "lastErr" ERR
 
 command_exists () {
-    command -v "$1" >/dev/null 2>&1
+    sudo command -v "$1" >/dev/null 2>&1
 }
 
 if command_exists systemctl ; then
