@@ -192,6 +192,14 @@ fi
 
 $SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip" > /dev/null 2>&1    
 
+uuidgen | $SUDO_CMD tee "$ES_CONF_DIR/search_guard_install_token" > /dev/null
+
+if [ "$ES_INSTALL_TYPE" == "rpm/deb" ]; then
+    $SUDO_CMD chown elasticsearch:root "$ES_CONF_DIR/search_guard_install_token"
+    $SUDO_CMD chmod 770 "$ES_CONF_DIR/search_guard_install_token"
+else    
+    $SUDO_CMD chmod 700 "$ES_CONF_DIR/search_guard_install_token"
+fi
 
 if [ "$commercial" == 1 ]; then
     SG_TMP="SGI_dlic_search_guard_auth_http_kerberos_${ES_MINOR_VERSION_COMPACT}"
