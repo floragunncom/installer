@@ -18,5 +18,13 @@ sudo ls -la /var/log/elasticsearch
 curl -k -u admin:admin https://localhost:9200/_searchguard/authinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_searchguard/sslinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
+
+set +e
+sudo ls -la /var/log/elasticsearch
+sudo cat /var/log/elasticsearch/*
+
+echo "Kill"
 sudo killall java
+
+sudo ls -la /var/log/elasticsearch
 sudo cat /var/log/elasticsearch/*
