@@ -8,5 +8,8 @@ test:
     - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/sginstall.sh) -d -v -c -s
     - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esrestart.sh)
     - sleep 30
+    - sudo cat /var/log/elasticsearch/*
     - curl -k -vv -u admin:admin https://localhost:9200/_searchguard/authinfo
+    - curl -k -vv -u admin:admin https://localhost:9200/_searchguard/sslinfo
+    - curl -k -vv -u admin:admin https://localhost:9200/_cluster/health
     - sudo killall java
