@@ -13,7 +13,7 @@ command_exists () {
     command -v "$1" >/dev/null 2>&1
 }
 
-ES_VERSION="5.3.0"
+ES_VERSION="$1"
 
 if command_exists yum ; then
 
