@@ -12,11 +12,11 @@ test:
             sleep 30
             ./sgadmin_demo.sh
             #sudo ls -la /etc/elasticsearch
-            #sudo ls -la /var/log/elasticsearch
+            sudo ls -la /var/log/elasticsearch
             #sudo cat /etc/elasticsearch/elasticsearch.yml
-            #sudo cat /var/log/elasticsearch/*
             curl -k -u admin:admin https://localhost:9200/_searchguard/authinfo?pretty
             curl -k -u admin:admin https://localhost:9200/_searchguard/sslinfo?pretty
             curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
             sudo killall java
+            sudo cat /var/log/elasticsearch/*
             

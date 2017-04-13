@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo "Search Guard 5 Installer Version 0.1"
+echo "Search Guard 5 Installer Version 1"
 
 
 OPTIND=1
