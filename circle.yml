@@ -19,7 +19,7 @@ test:
             curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
             sudo killall java
             sudo cat /var/log/elasticsearch/*
-            sudp apt-get purge -f -y elasticsearch 
+            sudo apt-get purge -f -y elasticsearch 
   
    - |
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh) 5.1.2
@@ -36,7 +36,7 @@ test:
             curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
             sudo killall java
             sudo cat /var/log/elasticsearch/*  
-            sudp apt-get purge -f -y elasticsearch         
+            sudo apt-get purge -f -y elasticsearch         
 
    - |
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh) 5.2.2
@@ -53,7 +53,7 @@ test:
             curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
             sudo killall java
             sudo cat /var/log/elasticsearch/*
-            sudp apt-get purge -f -y elasticsearch 
+            sudo apt-get purge -f -y elasticsearch 
             
    - |
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh) 5.3.0
@@ -70,4 +70,4 @@ test:
             curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
             sudo killall java
             sudo cat /var/log/elasticsearch/*
-            sudp apt-get purge -f -y elasticsearch 
+            sudo apt-get purge -f -y elasticsearch 
