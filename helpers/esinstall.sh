@@ -28,7 +28,7 @@ if command_exists yum ; then
     fi
 
     echo "Install Elasticsearch (rpm)"
-    wget "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.rpm" -O "/tmp/elasticsearch-$ES_VERSION.rpm" > /dev/null 2>&1
+    wget –quiet -nv "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.rpm" -O "/tmp/elasticsearch-$ES_VERSION.rpm" > /dev/null 2>&1
     sudo rpm --install "/tmp/elasticsearch-$ES_VERSION.rpm" > /dev/null 2>&1
     rm -f "/tmp/elasticsearch-$ES_VERSION.rpm" > /dev/null 2>&1
 else    
@@ -45,13 +45,13 @@ else
         fi
     
         echo "Install Elasticsearch (deb)"
-    	wget "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb" -O "/tmp/elasticsearch-$ES_VERSION.deb" > /dev/null 2>&1
+    	wget –quiet -nv "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb" -O "/tmp/elasticsearch-$ES_VERSION.deb" > /dev/null 2>&1
         sudo dpkg -i "/tmp/elasticsearch-$ES_VERSION.deb" > /dev/null 2>&1
         rm -f "/tmp/elasticsearch-$ES_VERSION.deb" > /dev/null 2>&1
         
     else
-         echo "Install Elasticsearch (tar.gz) in current folder $(pwd)"
-    	wget "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz" -O "/tmp/elasticsearch-$ES_VERSION.tar.gz" > /dev/null 2>&1
+        echo "Install Elasticsearch (tar.gz) in current folder $(pwd)"
+    	wget –quiet -nv "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.tar.gz" -O "/tmp/elasticsearch-$ES_VERSION.tar.gz" > /dev/null 2>&1
     	tar -xzvf "/tmp/elasticsearch-$ES_VERSION.tar.gz" > /dev/null 2>&1
     	rm -f "/tmp/elasticsearch-$ES_VERSION.tar.gz" > /dev/null 2>&1
     	
