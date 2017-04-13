@@ -1,0 +1,12 @@
+#Installer
+dependencies:
+  pre:
+    - sudo apt-get update; sudo apt-get install openssl libapr1 curl
+test:
+  override:
+    - sudo bash <(curl -s https://raw.githubusercontent.com/floragunncom/demo-installer/next/helpers/esinstall.sh)
+    - sudo bash <(curl -s https://raw.githubusercontent.com/floragunncom/demo-installer/next/sginstall.sh) -d -v -c -s
+    - sudo bash <(curl -s https://raw.githubusercontent.com/floragunncom/demo-installer/next/helpers/sgrestart.sh)
+    - sleep 30
+    - curl -k -vv -u admin:admin https://localhost:9200/_searchguard/authinfo
+    - sudo killall java
