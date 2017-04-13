@@ -6,7 +6,7 @@ test:
   override:
     - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh)
     - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/sginstall.sh) -d -v -c -s
-    - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/sgrestart.sh)
+    - bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esrestart.sh)
     - sleep 30
     - curl -k -vv -u admin:admin https://localhost:9200/_searchguard/authinfo
     - sudo killall java
