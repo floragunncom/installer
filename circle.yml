@@ -4,9 +4,10 @@ dependencies:
     - sudo apt-get update; sudo apt-get install openssl libapr1 curl
 test:
   override:
-    - |
+    - >
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh)
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/sginstall.sh) -d -v -c -s
+            sudo sed -i -e 's/network.host: 0.0.0.0/network.host: localhost/g' /etc/elasticsearch/elasticsearch.yml
             bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esrestart.sh)
             sleep 30
             sudo ls -la /etc/elasticsearch
