@@ -247,7 +247,7 @@ $SUDO_CMD rm -f "/tmp/p_search-guard-5.zip"
 $SUDO_CMD chmod -R +x "$ES_PLUGINS_DIR/search-guard-5/tools/"
 
 if [ "$demo" == 1 ]; then
-    $SUDO_CMD "$ES_PLUGINS_DIR/search-guard-5/tools/install_demo_configuration.sh" -y
+    "$ES_PLUGINS_DIR/search-guard-5/tools/install_demo_configuration.sh" -y
 else
    echo "Search Guard successfully installed"
 fi
