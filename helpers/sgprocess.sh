@@ -17,8 +17,13 @@ sleep 30
 #sudo ls -la /etc/elasticsearch
 #sudo cat /etc/elasticsearch/elasticsearch.yml
 curl -k -u admin:admin https://localhost:9200/_searchguard/authinfo?pretty
+curl -k -u admin:admin https://localhost:9200/_searchguard/kibanainfo?pretty
 curl -k -u admin:admin https://localhost:9200/_searchguard/sslinfo?pretty
 curl -k -u admin:admin https://localhost:9200/_cluster/health?pretty
+curl -k -u admin:admin -XPUT 'https://localhost:9200/twitter/tweet/1?pretty&refresh' -H 'Content-Type: application/json' -d '{
+    "message" : "trying out Search Guard"
+}'
+curl -k -u admin:admin https://localhost:9200/_search?pretty
 echo "Kill elasticsearch"
 sudo killall java
 #sudo ls -la /var/log/elasticsearch
