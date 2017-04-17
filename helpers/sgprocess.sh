@@ -9,7 +9,7 @@ sudo rm -rf /var/log/elasticsearch > /dev/null 2>&1
 set -e
 echo "Process $1"
 bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esinstall.sh) "$1"
-bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/sginstall.sh) -d -v -c -s
+bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/sginstall.sh) -d -v -c #-s
 sudo sed -i -e 's/network.host: 0.0.0.0/network.host: localhost/g' /etc/elasticsearch/elasticsearch.yml
 bash <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/helpers/esrestart.sh)
 sleep 30
