@@ -59,45 +59,7 @@ function err() {
     exit -1
 }
 
-SGI_status_50=supported
-SGI_search_guard_5_50=11
-SGI_dlic_search_guard_module_auditlog_50=5.0-4
-SGI_dlic_search_guard_rest_api_50=5.0-3
-SGI_dlic_search_guard_auth_http_kerberos_50=5.0-4
-SGI_dlic_search_guard_authbackend_ldap_50=5.0-7
-SGI_dlic_search_guard_module_dlsfls_50=5.0-6
-SGI_dlic_search_guard_auth_http_jwt_50=5.0-4
-SGI_tcnative_fork_50=1.1.33.Fork23
-
-SGI_status_51=supported
-SGI_search_guard_5_51=11
-SGI_dlic_search_guard_module_auditlog_51=5.1-4
-SGI_dlic_search_guard_rest_api_51=5.1-3
-SGI_dlic_search_guard_auth_http_kerberos_51=5.0-4
-SGI_dlic_search_guard_authbackend_ldap_51=5.0-7
-SGI_dlic_search_guard_module_dlsfls_51=5.1-6
-SGI_dlic_search_guard_auth_http_jwt_51=5.0-4
-SGI_tcnative_fork_51=1.1.33.Fork23
-
-SGI_status_52=supported
-SGI_search_guard_5_52=11
-SGI_dlic_search_guard_module_auditlog_52=5.2-4
-SGI_dlic_search_guard_rest_api_52=5.2-3
-SGI_dlic_search_guard_auth_http_kerberos_52=5.0-4
-SGI_dlic_search_guard_authbackend_ldap_52=5.0-7
-SGI_dlic_search_guard_module_dlsfls_52=5.2-6
-SGI_dlic_search_guard_auth_http_jwt_52=5.0-4
-SGI_tcnative_fork_52=1.1.33.Fork25
-
-SGI_status_53=supported
-SGI_search_guard_5_53=11
-SGI_dlic_search_guard_module_auditlog_53=5.3-4
-SGI_dlic_search_guard_rest_api_53=5.3-3
-SGI_dlic_search_guard_auth_http_kerberos_53=5.0-4
-SGI_dlic_search_guard_authbackend_ldap_53=5.0-7
-SGI_dlic_search_guard_module_dlsfls_53=5.3-6
-SGI_dlic_search_guard_auth_http_jwt_53=5.0-4
-SGI_tcnative_fork_53=1.1.33.Fork25
+source <(curl -s https://raw.githubusercontent.com/floragunncom/installer/next/versions)
 
 BASE_DIR="$(pwd)"
 ES_CONF_FILE="$BASE_DIR/config/elasticsearch.yml"
@@ -226,7 +188,9 @@ if [ "$commercial" == 1 ]; then
 	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-rest-api&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Management API module ${!SG_TMP} installed"
 	
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=snapshots&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=$ES_MINOR_VERSION-1-SNAPSHOT" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	SG_TMP="SGI_dlic_search_guard_module_kibana_multitenancy_${ES_MINOR_VERSION_COMPACT}"
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search_guard_module_kibana_multitenancy&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	dbg "Kibana multitenancy module ${!SG_TMP} installed"
 fi
 
 
