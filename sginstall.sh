@@ -189,6 +189,7 @@ if [ "$commercial" == 1 ]; then
 	dbg "Management API module ${!SG_TMP} installed"
 	
 	SG_TMP="SGI_dlic_search_guard_module_kibana_multitenancy_${ES_MINOR_VERSION_COMPACT}"
+	dbg "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=${!SG_TMP}"
 	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Kibana multitenancy module ${!SG_TMP} installed"
 fi
