@@ -11,9 +11,10 @@ verbose=0
 update=0
 commercial=0
 kibana=0
+nopackage=0
 
 function show_help() {
-    echo "sginstall.sh [-h] [-v] [-u] [-d] [-s] [-c]"
+    echo "sginstall.sh [-h] [-v] [-u] [-d] [-s] [-c] [-n]"
     echo "  -h show help"
     echo "  -v verbose"
     echo "  -u update plugin if already installed, otherwise fail"
@@ -21,9 +22,10 @@ function show_help() {
     echo "  -s install latest snapshot instead of latest release"
     echo "  -c install also commercial modules (like ldap, dls/fls, ...)"
     echo "  -k install also kibana plugin (if kibana could be found)"
+    echo "  -n do not check for deb/rpm installation, assume tar.gz"
 }
 
-while getopts "h?vudsck" opt; do
+while getopts "h?vudsckn" opt; do
     case "$opt" in
     h|\?)
         show_help
@@ -40,6 +42,8 @@ while getopts "h?vudsck" opt; do
     c)  commercial=1
         ;;
     k)  kibana=1
+        ;;
+    n)  nopackage=1
         ;;
     esac
 done
@@ -70,7 +74,7 @@ SUDO_CMD=""
 ES_INSTALL_TYPE=".tar.gz"
     
 #Check if its a rpm/deb install
-if [ -f /usr/share/elasticsearch/bin/elasticsearch ]; then
+if [ -f /usr/share/elasticsearch/bin/elasticsearch ] && [ "$nopackage" == 0 ]; then
     ES_CONF_FILE="/etc/elasticsearch/elasticsearch.yml"
     ES_BIN_DIR="/usr/share/elasticsearch/bin"
     ES_PLUGINS_DIR="/usr/share/elasticsearch/plugins"
