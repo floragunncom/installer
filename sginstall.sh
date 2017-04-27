@@ -152,11 +152,11 @@ if [ "$snapshot" == 1 ];then
     $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
 else
     echo "Will install Search Guard $ES_VERSION-$SG_VERSION release"
-    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" --content-disposition -O "/tmp/p_search-guard-5.zip"
     
 fi
 
-$SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip" > /dev/null 2>&1    
+$SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip"
 
 uuidgen | $SUDO_CMD tee "$ES_CONF_DIR/search_guard_install_token" > /dev/null
 
