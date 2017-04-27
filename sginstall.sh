@@ -149,10 +149,10 @@ $SUDO_CMD rm -f "$ES_PLUGINS_DIR/search-guard-5/dlic*.jar"
 
 if [ "$snapshot" == 1 ];then 
     echo "Will install Search Guard $ES_MINOR_VERSION.x-HEAD-SNAPSHOT (do not use this in production)"
-    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" --content-disposition -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
 else
     echo "Will install Search Guard $ES_VERSION-$SG_VERSION release"
-    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" --content-disposition -O "/tmp/p_search-guard-5.zip"
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" -O "/tmp/p_search-guard-5.zip"
     
 fi
 
@@ -209,7 +209,7 @@ else
   KIBANA_CLASSIFIER=linux-x86_64
 fi
 
-$SUDO_CMD wget "https://search.maven.org/remotecontent?filepath=io/netty/netty-tcnative/${!NETTY_NATIVE_VERSION}/netty-tcnative-${!NETTY_NATIVE_VERSION}-$NETTY_NATIVE_CLASSIFIER.jar" --content-disposition -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
+$SUDO_CMD wget "https://search.maven.org/remotecontent?filepath=io/netty/netty-tcnative/${!NETTY_NATIVE_VERSION}/netty-tcnative-${!NETTY_NATIVE_VERSION}-$NETTY_NATIVE_CLASSIFIER.jar" -O "netty-tcnative-${!NETTY_NATIVE_VERSION}-$NETTY_NATIVE_CLASSIFIER.jar" -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
 
 dbg "Openssl binding installed"
 
