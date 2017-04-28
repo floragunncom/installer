@@ -158,13 +158,6 @@ fi
 
 $SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip"
 
-if [ "$ES_INSTALL_TYPE" == "rpm/deb" ]; then
-    $SUDO_CMD chown elasticsearch:root "$ES_CONF_DIR/search_guard_install_token"
-    $SUDO_CMD chmod 770 "$ES_CONF_DIR/search_guard_install_token"
-else    
-    $SUDO_CMD chmod 700 "$ES_CONF_DIR/search_guard_install_token"
-fi
-
 if [ "$commercial" == 1 ]; then
     SG_TMP="SGI_dlic_search_guard_auth_http_kerberos_${ES_MINOR_VERSION_COMPACT}"
 	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-kerberos&v=${!SG_TMP}" -O "dlic-search-guard-auth-http-kerberos-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
