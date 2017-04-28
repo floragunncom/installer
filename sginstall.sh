@@ -152,13 +152,11 @@ if [ "$snapshot" == 1 ];then
     $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=snapshots&g=com.floragunn&a=search-guard-5&v=$ES_MINOR_VERSION.x-HEAD-SNAPSHOT" -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
 else
     echo "Will install Search Guard $ES_VERSION-$SG_VERSION release"
-    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" -O "/tmp/p_search-guard-5.zip"
+    $SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?e=zip&r=releases&g=com.floragunn&a=search-guard-5&v=$ES_VERSION-$SG_VERSION" -O "/tmp/p_search-guard-5.zip"  > /dev/null 2>&1
     
 fi
 
 $SUDO_CMD "$ES_BIN_DIR/elasticsearch-plugin" install -b "file:///tmp/p_search-guard-5.zip"
-
-uuidgen | $SUDO_CMD tee "$ES_CONF_DIR/search_guard_install_token" > /dev/null
 
 if [ "$ES_INSTALL_TYPE" == "rpm/deb" ]; then
     $SUDO_CMD chown elasticsearch:root "$ES_CONF_DIR/search_guard_install_token"
@@ -169,38 +167,38 @@ fi
 
 if [ "$commercial" == 1 ]; then
     SG_TMP="SGI_dlic_search_guard_auth_http_kerberos_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-kerberos&v=${!SG_TMP}" --content-disposition  -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-kerberos&v=${!SG_TMP}" -O "dlic-search-guard-auth-http-kerberos-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5" > /dev/null 2>&1
 	dbg "Kerberos module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_auth_http_jwt_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-jwt&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-auth-http-jwt&v=${!SG_TMP}" -O "dlic-search-guard-auth-http-jwt-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "JWT module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_module_dlsfls_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-dlsfls&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-dlsfls&v=${!SG_TMP}" -O "dlic-search-guard-module-dlsfls-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "DLS/FLS module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_module_auditlog_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-auditlog&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-auditlog&v=${!SG_TMP}" -O "dlic-search-guard-module-auditlog-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Auditlog module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_authbackend_ldap_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-authbackend-ldap&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-authbackend-ldap&v=${!SG_TMP}" -O "dlic-search-guard-authbackend-ldap-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "LDAP module ${!SG_TMP} installed"
 
 	SG_TMP="SGI_dlic_search_guard_rest_api_${ES_MINOR_VERSION_COMPACT}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-rest-api&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-rest-api&v=${!SG_TMP}" -O "ddlic-search-guard-rest-api-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Management API module ${!SG_TMP} installed"
 	
 	SG_TMP="SGI_dlic_search_guard_module_kibana_multitenancy_${ES_MINOR_VERSION_COMPACT}"
-	dbg "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=${!SG_TMP}"
-	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=${!SG_TMP}" --content-disposition   -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
+	$SUDO_CMD wget "http://oss.sonatype.org/service/local/artifact/maven/content?c=jar-with-dependencies&r=releases&g=com.floragunn&a=dlic-search-guard-module-kibana-multitenancy&v=${!SG_TMP}" -O "dlic-search-guard-module-kibana-multitenancy-jar-with-dependencies-${!SG_TMP}.jar" -P "$ES_PLUGINS_DIR/search-guard-5"  > /dev/null 2>&1
 	dbg "Kibana multitenancy module ${!SG_TMP} installed"
 fi
 
 
 NETTY_NATIVE_VERSION="SGI_tcnative_fork_${ES_MINOR_VERSION_COMPACT}"
 
+#TODO support alpine
 if [ "$(uname)" == "Darwin" ]; then
   NETTY_NATIVE_CLASSIFIER=osx-x86_64
   KIBANA_CLASSIFIER=darwin-x86_64
