@@ -47,3 +47,15 @@ SGI_dlic_search_guard_auth_http_jwt_53=5.0-4
 SGI_dlic_search_guard_module_kibana_multitenancy_53=5.3-1
 SGI_kibana_module=2
 SGI_tcnative_fork_53=1.1.33.Fork25
+
+SGI_status_54=supported
+SGI_search_guard_5_54=12
+SGI_dlic_search_guard_module_auditlog_54=5.3-4
+SGI_dlic_search_guard_rest_api_54=5.3-3
+SGI_dlic_search_guard_auth_http_kerberos_54=5.0-4
+SGI_dlic_search_guard_authbackend_ldap_54=5.0-7
+SGI_dlic_search_guard_module_dlsfls_54=5.3-6
+SGI_dlic_search_guard_auth_http_jwt_54=5.0-4
+SGI_dlic_search_guard_module_kibana_multitenancy_54=5.3-1
+SGI_kibana_module=2
+SGI_tcnative_fork_54=2.0.0.Final
