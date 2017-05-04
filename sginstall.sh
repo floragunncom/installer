@@ -63,7 +63,7 @@ function err() {
     exit -1
 }
 
-source <(curl -s -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/floragunncom/installer/next/versions)
+source <(curl -s -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/floragunncom/installer/next/versions?123)
 
 BASE_DIR="$(pwd)"
 ES_CONF_FILE="$BASE_DIR/config/elasticsearch.yml"
