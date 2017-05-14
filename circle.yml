@@ -7,4 +7,5 @@ test:
     - ./helpers/sgprocess.sh 5.0.2
     - ./helpers/sgprocess.sh 5.1.2
     - ./helpers/sgprocess.sh 5.2.2
-    - ./helpers/sgprocess.sh 5.3.0
+    - ./helpers/sgprocess.sh 5.3.2
+    - ./helpers/sgprocess.sh 5.4.0
